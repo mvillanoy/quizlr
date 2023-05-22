@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizlr/model/quiz.dart';
 
 class QuestionControlButton extends StatelessWidget {
   const QuestionControlButton(

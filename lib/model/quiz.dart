@@ -27,10 +27,10 @@ class Quiz {
   List<Option>? options;
 
   factory Quiz.fromJson(Map<String, dynamic> json) {
-    List<dynamic> options = json['options'];
+    List<dynamic> options = json['options'] ?? [];
 
     return Quiz(
-      type: json['type'],
+      type: QuizType.values.byName(json['type']),
       id: json['id'],
       playlist: json['playlist'],
       flashcardFront: json['flashcard_front'],

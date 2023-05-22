@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizlr/model/quiz.dart';
-import 'package:quizlr/ui/components/coming_soon.dart';
+import 'package:quizlr/network/http_client.dart';
 import 'package:quizlr/ui/quiz/components/quiz_item.dart';
 
 import 'components/timer.dart';
@@ -18,6 +18,16 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   // int _selectedIndex = 0;
 
+  late Future<Quiz> futureFollowing;
+  late Future<Quiz> futureForYou;
+
+  @override
+  void initState() {
+    super.initState();
+    futureFollowing = getFollowing();
+    futureForYou = getForYou();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,24 +37,42 @@ class _QuizPageState extends State<QuizPage> {
           children: [
             TabBarView(
               children: [
-                PageView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    QuizItem(quiz: kQuiz),
-                    QuizItem(quiz: kQuiz2),
-                    QuizItem(quiz: kQuiz),
-                    QuizItem(quiz: kQuiz2),
-                  ],
-                ),
-                PageView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    QuizItem(quiz: kQuiz2),
-                    QuizItem(quiz: kQuiz),
-                    QuizItem(quiz: kQuiz2),
-                    QuizItem(quiz: kQuiz),
-                  ],
-                ),
+                FutureBuilder<Quiz>(
+                    future: futureFollowing,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return PageView(
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            QuizItem(quiz: snapshot.data!),
+                            QuizItem(quiz: snapshot.data!),
+                            QuizItem(quiz: snapshot.data!),
+                            QuizItem(quiz: snapshot.data!),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    }),
+                FutureBuilder<Quiz>(
+                    future: futureForYou,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return PageView(
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            QuizItem(quiz: snapshot.data!),
+                            QuizItem(quiz: snapshot.data!),
+                            QuizItem(quiz: snapshot.data!),
+                            QuizItem(quiz: snapshot.data!),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    }),
               ],
             ),
             Align(

@@ -47,49 +47,59 @@ class _QuizItemState extends State<QuizItem> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: Stack(
                       children: [
-                        const Spacer(),
-                        _getQuestionView(),
-                        if (widget.quiz.type == QuizType.mcq) ...[
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          _getChoicesView(),
-                        ],
-                        if (showAnswer) ...[
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          _getAnswerView(),
-                        ],
-                        const Spacer(),
-                        if (showAnswer) ...[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: SurveyWidget(),
-                          ),
-                        ],
-                        const SizedBox(
-                          height: 16,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Spacer(),
+                            _getQuestionView(),
+                            if (widget.quiz.type == QuizType.mcq) ...[
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              _getChoicesView(),
+                            ],
+                            if (showAnswer) ...[
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              _getAnswerView(),
+                            ],
+                            const Spacer(),
+                            if (showAnswer) ...[
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: SurveyWidget(),
+                              ),
+                            ],
+                            const SizedBox(
+                              height: 16,
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 16),
-                          child: Text(
-                            widget.quiz.user.name,
-                            style: kTextStyleTitle,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
-                          child: Text(
-                            widget.quiz.description,
-                            style: kTextStyleDescription,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 16),
+                              child: Text(
+                                widget.quiz.user.name,
+                                style: kTextStyleTitle,
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              child: Text(
+                                widget.quiz.description,
+                                style: kTextStyleDescription,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -128,9 +138,7 @@ class _QuizItemState extends State<QuizItem> {
             style: kTextStyleAnswer,
           ),
           Text(
-            widget.quiz.type == QuizType.flashcard
-                ? widget.quiz.flashcardFront ?? ""
-                : widget.quiz.question ?? "",
+            widget.quiz.flashcardBack ?? "",
             style: kTextStyleQuestion,
           ),
         ],
