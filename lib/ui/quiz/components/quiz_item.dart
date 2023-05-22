@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:quizlr/constants/styles.dart';
 import 'package:quizlr/model/quiz.dart';
@@ -46,59 +47,49 @@ class _QuizItemState extends State<QuizItem> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Stack(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const Spacer(),
-                            _getQuestionView(),
-                            if (widget.quiz.type == QuizType.mcq) ...[
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              _getChoicesView(),
-                            ],
-                            if (showAnswer) ...[
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              _getAnswerView(),
-                            ],
-                            const Spacer(),
-                            if (showAnswer) ...[
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                child: SurveyWidget(),
-                              ),
-                            ],
-                            const SizedBox(
-                              height: 16,
-                            ),
-                          ],
+                        const Spacer(),
+                        _getQuestionView(),
+                        if (widget.quiz.type == QuizType.mcq) ...[
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          _getChoicesView(),
+                        ],
+                        if (showAnswer) ...[
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          _getAnswerView(),
+                        ],
+                        const Spacer(),
+                        if (showAnswer) ...[
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: SurveyWidget(),
+                          ),
+                        ],
+                        const SizedBox(
+                          height: 16,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 16),
-                              child: Text(
-                                widget.quiz.user.name,
-                                style: kTextStyleTitle,
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
-                              child: Text(
-                                widget.quiz.description,
-                                style: kTextStyleDescription,
-                              ),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 16),
+                          child: Text(
+                            widget.quiz.user.name,
+                            style: kTextStyleTitle,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          child: Text(
+                            widget.quiz.description,
+                            style: kTextStyleDescription,
+                          ),
                         ),
                       ],
                     ),
@@ -117,11 +108,12 @@ class _QuizItemState extends State<QuizItem> {
   Widget _getQuestionView() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Text(
+      child: AutoSizeText(
         widget.quiz.type == QuizType.flashcard
             ? widget.quiz.flashcardFront ?? ""
             : widget.quiz.question ?? "",
         style: kTextStyleQuestion,
+        maxLines: 4,
       ),
     );
   }
@@ -136,9 +128,10 @@ class _QuizItemState extends State<QuizItem> {
             "Answer",
             style: kTextStyleAnswer,
           ),
-          Text(
+          AutoSizeText(
             widget.quiz.flashcardBack ?? "",
             style: kTextStyleQuestion,
+            maxLines: 10,
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:quizlr/constants/styles.dart';
 import 'package:quizlr/model/options.dart';
@@ -34,7 +35,7 @@ class _OptionItemState extends State<OptionItem> {
                   : kRedMedium
               : kTealGray,
         ),
-        height: 40,
+        height: 50,
         width: double.infinity,
         child: Row(
           children: [
@@ -42,14 +43,17 @@ class _OptionItemState extends State<OptionItem> {
               width: 8,
             ),
             Expanded(
-              child: Text(
-                widget.option.answer,
-                style: const TextStyle(
-                  color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AutoSizeText(
+                  widget.option.answer,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                  maxLines: 2,
                 ),
               ),
             ),
-            const Spacer(),
             if (isSelected) ...[
               Padding(
                 padding: const EdgeInsets.all(8.0),
