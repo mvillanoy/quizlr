@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizlr/ui/components/coming_soon.dart';
+import 'package:quizlr/ui/quiz/quiz_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,13 +12,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
+  List<Widget> pageList = [
+    const QuizPage(),
+    const ComingSoon(),
+    const ComingSoon(),
+    const ComingSoon(),
+    const ComingSoon(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          'Index {$_selectedIndex}',
-        ),
+        child: pageList[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
