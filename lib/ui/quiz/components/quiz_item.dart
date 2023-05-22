@@ -16,7 +16,6 @@ class QuizItem extends StatefulWidget {
 }
 
 class _QuizItemState extends State<QuizItem> {
-  int _selectedIndex = -1;
   bool showAnswer = false;
 
   @override
@@ -108,7 +107,7 @@ class _QuizItemState extends State<QuizItem> {
                 ],
               ),
             ),
-            PlaylistWidget(playlistName: widget.quiz.description),
+            PlaylistWidget(playlistName: widget.quiz.playlist),
           ],
         ),
       ),
@@ -159,11 +158,5 @@ class _QuizItemState extends State<QuizItem> {
             ),
           );
         });
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 }

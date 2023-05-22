@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:quizlr/model/quiz.dart';
 import 'package:quizlr/network/http_client.dart';
@@ -16,16 +18,29 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  // int _selectedIndex = 0;
+  late Future<Quiz> _futureFollowing;
+  late Future<Quiz> _futureForYou;
 
-  late Future<Quiz> futureFollowing;
-  late Future<Quiz> futureForYou;
+  late Timer _timer;
+  int _timeTotal = 0;
 
   @override
   void initState() {
     super.initState();
-    futureFollowing = getFollowing();
-    futureForYou = getForYou();
+    _futureFollowing = getFollowing();
+    _futureForYou = getForYou();
+
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+      setState(() {
+        _timeTotal += 1;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -38,7 +53,7 @@ class _QuizPageState extends State<QuizPage> {
             TabBarView(
               children: [
                 FutureBuilder<Quiz>(
-                    future: futureFollowing,
+                    future: _futureFollowing,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return PageView(
@@ -56,7 +71,7 @@ class _QuizPageState extends State<QuizPage> {
                       return const Center(child: CircularProgressIndicator());
                     }),
                 FutureBuilder<Quiz>(
-                    future: futureForYou,
+                    future: _futureForYou,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return PageView(
@@ -78,15 +93,15 @@ class _QuizPageState extends State<QuizPage> {
             Align(
               alignment: Alignment.topCenter,
               child: Row(
-                children: const [
+                children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: TimerWidget(
-                      remainingTime: 10,
+                      remainingTime: _timeTotal,
                     ),
                   ),
-                  Spacer(),
-                  SizedBox(
+                  const Spacer(),
+                  const SizedBox(
                     width: 200,
                     child: TabBar(
                       indicatorColor: Colors.white,
@@ -101,8 +116,8 @@ class _QuizPageState extends State<QuizPage> {
                       ],
                     ),
                   ),
-                  Spacer(),
-                  Padding(
+                  const Spacer(),
+                  const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Icon(Icons.search),
                   )

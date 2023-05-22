@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizlr/utils/time_utils.dart';
 
 class TimerWidget extends StatelessWidget {
   const TimerWidget({super.key, required this.remainingTime});
@@ -15,7 +16,7 @@ class TimerWidget extends StatelessWidget {
           color: Colors.white54,
         ),
         Text(
-          "${remainingTime}m",
+          timeAgo(remainingTime),
           style: const TextStyle(
             color: Colors.white54,
           ),
